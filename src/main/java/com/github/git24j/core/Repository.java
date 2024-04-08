@@ -53,7 +53,7 @@ public class Repository extends CAutoCloseable {
 
     static native int jniIsEmpty(long repoPtr);
 
-    static native int jniIsShadow(long repoPtr);
+    static native int jniIsShallow(long repoPtr);
 
     static native int jniIsWorktree(long repoPtr);
 
@@ -470,8 +470,8 @@ public class Repository extends CAutoCloseable {
     }
 
     /** Determine if the repository was a shallow clone. */
-    public boolean isShadow() {
-        return jniIsShadow(getRawPointer()) == 1;
+    public boolean isShallow() {
+        return jniIsShallow(getRawPointer()) == 1;
     }
 
     //

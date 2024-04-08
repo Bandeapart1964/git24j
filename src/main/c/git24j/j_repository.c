@@ -161,8 +161,8 @@ typedef struct
     jstring originUrl;
 } init_options_jobjects;
 
-/** 
- * populate git_repository_init_options with values from java. 
+/**
+ * populate git_repository_init_options with values from java.
  * NOTE: this may allocate char * data that needs to be free-ed separtely.
  */
 void init_options_copy_from_java(JNIEnv *env, jobject initOpts, git_repository_init_options *c_init_opts)
@@ -514,7 +514,7 @@ JNIEXPORT jstring JNICALL J_MAKE_METHOD(Repository_jniGetNamespace)(JNIEnv *env,
 }
 
 /** int git_repository_is_shallow(git_repository *repo); */
-JNIEXPORT jint JNICALL J_MAKE_METHOD(Repository_jniIsShadow)(JNIEnv *env, jclass obj, jlong repoPtr)
+JNIEXPORT jint JNICALL J_MAKE_METHOD(Repository_jniIsShallow)(JNIEnv *env, jclass obj, jlong repoPtr)
 {
     return git_repository_is_shallow((git_repository *)repoPtr);
 }
