@@ -1950,10 +1950,22 @@ public class Diff extends CAutoReleasable {
         public String getContent() {
             String content = jniLineGetContent(getRawPointer());
             int contentLen = jniLineGetContentLen(getRawPointer());
-            if (content.length() >= contentLen) {
-                return content.substring(0, contentLen);
+            // content.length() is "chars count", not "bytes count"!
+            // so this code is wrong in some cases! sometimes it will give you more lines than you wanted.
+//            if (content.length() >= contentLen) {
+//                return content.substring(0, contentLen);
+//            }
+            byte[] bytes = content.getBytes();
+            // bytes.length < contentLen maybe not happen, because contentLen should be a part of content
+            if(bytes.length > contentLen) {  //if content length bigger than contentLen, create a new sub array
+                byte[] nb = new byte[contentLen];
+                for(int i =0; i<contentLen; i++) {  // fill the sub array
+                    nb[i]=bytes[i];
+                }
+                return new String(nb);
+            }else {  // if content length equals contentLen, just return it, no more operations required
+                return content;
             }
-            return content;
         }
     }
 
