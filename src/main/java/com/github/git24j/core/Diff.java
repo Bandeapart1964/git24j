@@ -3,6 +3,7 @@ package com.github.git24j.core;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -1803,7 +1804,16 @@ public class Diff extends CAutoReleasable {
         }
 
         public String getHeader() {
-            return jniHunkGetHeader(getRawPointer());
+            String rawHeader = jniHunkGetHeader(getRawPointer());
+            int headerLen = getHeaderLen();
+            byte[] src = rawHeader.getBytes(StandardCharsets.UTF_8);
+            if(src.length > headerLen) {
+                byte[] dest = new byte[headerLen];
+                System.arraycopy(src, 0, dest, 0, headerLen);
+                return new String(dest);
+            }
+
+            return rawHeader;
         }
     }
 
@@ -1955,17 +1965,17 @@ public class Diff extends CAutoReleasable {
 //            if (content.length() >= contentLen) {
 //                return content.substring(0, contentLen);
 //            }
-            byte[] bytes = content.getBytes();
+            byte[] src = content.getBytes(StandardCharsets.UTF_8);
             // bytes.length < contentLen maybe not happen, because contentLen should be a part of content
-            if(bytes.length > contentLen) {  //if content length bigger than contentLen, create a new sub array
-                byte[] nb = new byte[contentLen];
-                for(int i =0; i<contentLen; i++) {  // fill the sub array
-                    nb[i]=bytes[i];
-                }
-                return new String(nb);
-            }else {  // if content length equals contentLen, just return it, no more operations required
-                return content;
+            if(src.length > contentLen) {  //if content length bigger than contentLen, create a new sub array
+                byte[] dest = new byte[contentLen];
+                System.arraycopy(src,0,dest,0,contentLen);
+                return new String(dest);
             }
+
+            // if content length equals contentLen, just return it, no more operations required
+            return content;
+
         }
     }
 
