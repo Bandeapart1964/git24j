@@ -88,7 +88,7 @@ int j_git_transport_certificate_check_cb(git_cert *cert, int valid, const char *
     }
     JNIEnv *env = getEnv();
     jstring jHost = (*env)->NewStringUTF(env, host);
-    int r = (*env)->CallIntMethod(env, (jobject)payload, jniConstants->remote.midTransportCertificateCheck, (long)cert, valid, jHost);
+    int r = (*env)->CallIntMethod(env, (jobject)payload, jniConstants->remote.midTransportCertificateCheck, (jlong)cert, valid, jHost);
     (*env)->DeleteLocalRef(env, jHost);
     return r;
 }
@@ -100,7 +100,7 @@ int j_git_transfer_progress_cb(const git_transfer_progress *stats, void *payload
         return 0;
     }
     JNIEnv *env = getEnv();
-    int r = (*env)->CallIntMethod(env, (jobject)payload, jniConstants->remote.midTransferProgress, (long)stats);
+    int r = (*env)->CallIntMethod(env, (jobject)payload, jniConstants->remote.midTransferProgress, (jlong)stats);
     return r;
 }
 
@@ -187,7 +187,7 @@ int j_git_transport_cb(git_transport **out, git_remote *owner, void *payload)
         return 0;
     }
     JNIEnv *env = getEnv();
-    long res = (*env)->CallIntMethod(env, (jobject)payload, jniConstants->remote.midTransport, (long)owner);
+    long res = (*env)->CallIntMethod(env, (jobject)payload, jniConstants->remote.midTransport, (jlong)owner);
     if (res > 0)
     {
         *out = (git_transport *)res;
@@ -267,7 +267,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Remote_jniCreate)(JNIEnv *env, jclass obj, 
     char *c_name = j_copy_of_jstring(env, name, true);
     char *c_url = j_copy_of_jstring(env, url, true);
     int r = git_remote_create(&c_out, (git_repository *)repoPtr, c_name, c_url);
-    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (long)c_out);
+    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (jlong)c_out);
     free(c_name);
     free(c_url);
     return r;
@@ -279,7 +279,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Remote_jniCreateAnonymous)(JNIEnv *env, jcl
     git_remote *c_out = 0;
     char *c_url = j_copy_of_jstring(env, url, true);
     int r = git_remote_create_anonymous(&c_out, (git_repository *)repoPtr, c_url);
-    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (long)c_out);
+    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (jlong)c_out);
     free(c_url);
     return r;
 }
@@ -290,7 +290,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Remote_jniCreateDetached)(JNIEnv *env, jcla
     git_remote *c_out = 0;
     char *c_url = j_copy_of_jstring(env, url, true);
     int r = git_remote_create_detached(&c_out, c_url);
-    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (long)c_out);
+    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (jlong)c_out);
     free(c_url);
     return r;
 }
@@ -306,7 +306,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Remote_jniCreateOptionsNew)(JNIEnv *env, jc
 {
     git_remote_create_options *opts = (git_remote_create_options *)malloc(sizeof(git_remote_create_options));
     int r = git_remote_create_init_options(opts, version);
-    (*env)->CallVoidMethod(env, outOpts, jniConstants->midAtomicLongSet, (long)opts);
+    (*env)->CallVoidMethod(env, outOpts, jniConstants->midAtomicLongSet, (jlong)opts);
     return r;
 }
 
@@ -326,7 +326,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Remote_jniCreateWithFetchspec)(JNIEnv *env,
     char *c_url = j_copy_of_jstring(env, url, true);
     char *c_fetch = j_copy_of_jstring(env, fetch, true);
     int r = git_remote_create_with_fetchspec(&c_out, (git_repository *)repoPtr, c_name, c_url, c_fetch);
-    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (long)c_out);
+    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (jlong)c_out);
     free(c_name);
     free(c_url);
     free(c_fetch);
@@ -339,7 +339,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Remote_jniCreateWithOpts)(JNIEnv *env, jcla
     git_remote *c_out = 0;
     char *c_url = j_copy_of_jstring(env, url, true);
     int r = git_remote_create_with_opts(&c_out, c_url, (git_remote_create_options *)optsPtr);
-    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (long)c_out);
+    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (jlong)c_out);
     free(c_url);
     return r;
 }
@@ -384,7 +384,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Remote_jniDup)(JNIEnv *env, jclass obj, job
 {
     git_remote *c_dest = 0;
     int r = git_remote_dup(&c_dest, (git_remote *)sourcePtr);
-    (*env)->CallVoidMethod(env, dest, jniConstants->midAtomicLongSet, (long)c_dest);
+    (*env)->CallVoidMethod(env, dest, jniConstants->midAtomicLongSet, (jlong)c_dest);
     return r;
 }
 
@@ -453,7 +453,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Remote_jniCallbacksNew)(JNIEnv *env, jclass
 {
     git_remote_callbacks *cb = (git_remote_callbacks *)malloc(sizeof(git_remote_callbacks));
     int r = git_remote_init_callbacks((git_remote_callbacks *)cb, version);
-    (*env)->CallVoidMethod(env, outCb, jniConstants->midAtomicLongSet, (long)cb);
+    (*env)->CallVoidMethod(env, outCb, jniConstants->midAtomicLongSet, (jlong)cb);
     return r;
 }
 
@@ -569,7 +569,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Remote_jniLookup)(JNIEnv *env, jclass obj, 
     git_remote *c_out = 0;
     char *c_name = j_copy_of_jstring(env, name, true);
     int r = git_remote_lookup(&c_out, (git_repository *)repoPtr, c_name);
-    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (long)c_out);
+    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (jlong)c_out);
     free(c_name);
     return r;
 }
@@ -779,7 +779,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Remote_jniFetchOptionsNew)(JNIEnv *env, jcl
 {
     git_fetch_options *opts = (git_fetch_options *)malloc(sizeof(git_fetch_options));
     int r = git_fetch_init_options(opts, version);
-    (*env)->CallVoidMethod(env, outPtr, jniConstants->midAtomicLongSet, (long)opts);
+    (*env)->CallVoidMethod(env, outPtr, jniConstants->midAtomicLongSet, (jlong)opts);
     return r;
 }
 JNIEXPORT void JNICALL J_MAKE_METHOD(Remote_jniFetchOptionsFree)(JNIEnv *env, jclass obj, jobject optsPtr)
@@ -888,7 +888,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Remote_jniPushOptionsNew)(JNIEnv *env, jcla
 {
     git_push_options *opts = (git_push_options *)malloc(sizeof(git_push_options));
     int r = git_push_options_init(opts, version);
-    (*env)->CallVoidMethod(env, outPtr, jniConstants->midAtomicLongSet, (long)opts);
+    (*env)->CallVoidMethod(env, outPtr, jniConstants->midAtomicLongSet, (jlong)opts);
     return r;
 }
 JNIEXPORT void JNICALL J_MAKE_METHOD(Remote_jniPushOptionsFree)(JNIEnv *env, jclass obj, jobject optsPtr)

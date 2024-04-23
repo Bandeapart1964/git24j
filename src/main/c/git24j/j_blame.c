@@ -43,7 +43,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Blame_jniFile)(JNIEnv *env, jclass obj, job
     git_blame *c_out = NULL;
     char *c_path = j_copy_of_jstring(env, path, true);
     int r = git_blame_file(&c_out, (git_repository *)repoPtr, c_path, (git_blame_options *)optionsPtr);
-    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (long)c_out);
+    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (jlong)c_out);
     /* git_blame_free(c_out); */
     free(c_path);
     return r;
@@ -55,7 +55,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Blame_jniBuffer)(JNIEnv *env, jclass obj, j
     git_blame *c_out = NULL;
     char *c_buffer = j_copy_of_jstring(env, buffer, true);
     int r = git_blame_buffer(&c_out, (git_blame *)referencePtr, c_buffer, bufferLen);
-    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (long)c_out);
+    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (jlong)c_out);
     /* git_blame_free(c_out); */
     free(c_buffer);
     return r;
