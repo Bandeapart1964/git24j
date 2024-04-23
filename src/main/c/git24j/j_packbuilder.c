@@ -25,7 +25,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Packbuilder_jniNew)(JNIEnv *env, jclass obj
 {
     git_packbuilder *c_out;
     int r = git_packbuilder_new(&c_out, (git_repository *)repoPtr);
-    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (long)c_out);
+    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (jlong)c_out);
     /* git_packbuilder_free(c_out); */
     return r;
 }

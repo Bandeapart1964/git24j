@@ -100,7 +100,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Tree_jniEntryBypath)(JNIEnv *env, jclass ob
     git_tree_entry *c_out = 0;
     char *c_path = j_copy_of_jstring(env, path, true);
     int r = git_tree_entry_bypath(&c_out, (git_tree *)rootPtr, c_path);
-    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (long)c_out);
+    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (jlong)c_out);
     /* git_tree_entry_free(c_out); */
     free(c_path);
     return r;
@@ -111,7 +111,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Tree_jniEntryDup)(JNIEnv *env, jclass obj, 
 {
     git_tree_entry *c_dest = 0;
     int r = git_tree_entry_dup(&c_dest, (git_tree_entry *)sourcePtr);
-    (*env)->CallVoidMethod(env, dest, jniConstants->midAtomicLongSet, (long)c_dest);
+    (*env)->CallVoidMethod(env, dest, jniConstants->midAtomicLongSet, (jlong)c_dest);
     /* git_tree_entry_free(c_dest); */
     return r;
 }
@@ -169,7 +169,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Tree_jniEntryToObject)(JNIEnv *env, jclass 
 {
     git_object *c_object_out = 0;
     int r = git_tree_entry_to_object(&c_object_out, (git_repository *)repoPtr, (git_tree_entry *)entryPtr);
-    (*env)->CallVoidMethod(env, objectOut, jniConstants->midAtomicLongSet, (long)c_object_out);
+    (*env)->CallVoidMethod(env, objectOut, jniConstants->midAtomicLongSet, (jlong)c_object_out);
     /* git_object_free(c_object_out); */
     return r;
 }
@@ -179,7 +179,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Tree_jniDup)(JNIEnv *env, jclass obj, jobje
 {
     git_tree *c_out = 0;
     int r = git_tree_dup(&c_out, (git_tree *)sourcePtr);
-    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (long)c_out);
+    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (jlong)c_out);
     /* git_tree_free(c_out); */
     return r;
 }
@@ -247,7 +247,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Tree_jniBuilderNew)(JNIEnv *env, jclass obj
 {
     git_treebuilder *c_out = 0;
     int r = git_treebuilder_new(&c_out, (git_repository *)repoPtr, (git_tree *)sourcePtr);
-    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (long)c_out);
+    (*env)->CallVoidMethod(env, out, jniConstants->midAtomicLongSet, (jlong)c_out);
     /* git_treebuilder_free(c_out); */
     return r;
 }

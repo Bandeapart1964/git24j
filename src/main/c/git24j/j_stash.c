@@ -24,7 +24,7 @@ int j_git_stash_cb(size_t index, const char *message, const git_oid *stash_id, v
     JNIEnv *env = getEnv();
     jstring jMessage = (*env)->NewStringUTF(env, message);
     jbyteArray stashIdBytes = j_git_oid_to_bytearray(env, stash_id);
-    int r = (*env)->CallIntMethod(env, j_payload->callback, j_payload->mid, (int)index, jMessage, stashIdBytes);
+    int r = (*env)->CallIntMethod(env, j_payload->callback, j_payload->mid, (jint)index, jMessage, stashIdBytes);
     (*env)->DeleteLocalRef(env, jMessage);
     (*env)->DeleteLocalRef(env, stashIdBytes);
     return r;
@@ -87,7 +87,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Stash_jniApplyFlagsNew)(JNIEnv *env, jclass
     git_stash_apply_options *opts = (git_stash_apply_options *)malloc(sizeof(git_stash_apply_options));
     opts->progress_payload = NULL;
     int e = git_stash_apply_options_init(opts, version);
-    (*env)->CallVoidMethod(env, outPtr, jniConstants->midAtomicLongSet, (long)opts);
+    (*env)->CallVoidMethod(env, outPtr, jniConstants->midAtomicLongSet, (jlong)opts);
     return e;
 }
 
