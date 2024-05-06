@@ -326,7 +326,7 @@ public class Branch {
             _bit = bit;
         }
 
-        static BranchType valueOf(int iVal) {
+        public static BranchType valueOf(int iVal) {
             return IBitEnum.valueOf(iVal, BranchType.class, INVALID);
         }
 
