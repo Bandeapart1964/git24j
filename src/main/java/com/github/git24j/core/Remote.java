@@ -1423,7 +1423,8 @@ public class Remote extends CAutoReleasable {
          *
          * @return 0 if no credential was acquired, > 0 if credentials acquired successfully, < 0 will not happened
          */
-        public long acquireCred(String url, String usernameFromUrl, int allowedTypes) {
+        //this method only used by jni, so set it to private is ok
+        private long acquireCred(String url, String usernameFromUrl, int allowedTypes) {
             if (_credAcquireCb != null) {
                 return Optional.ofNullable(
                                 _credAcquireCb.acquire(url, usernameFromUrl, allowedTypes))
@@ -1433,14 +1434,14 @@ public class Remote extends CAutoReleasable {
             return 0;
         }
 
-        public int transportMessage(String message) {
+        private int transportMessage(String message) {
             if (_transportMsg != null) {
                 return _transportMsg.accept(message);
             }
             return 0;
         }
 
-        public int complete(int type) {
+        private int complete(int type) {
             if (_completionCb != null) {
                 CompletionT completionT =
                         type == 0
@@ -1451,7 +1452,7 @@ public class Remote extends CAutoReleasable {
             return 0;
         }
 
-        public int transportMessageCheck(long certPtr, int valid, String host) {
+        private int transportMessageCheck(long certPtr, int valid, String host) {
             if (_certificateCheckCb != null) {
                 Cert cert = certPtr == 0 ? null : new Cert(true, certPtr);
                 return _certificateCheckCb.accept(cert, valid != 0, host);
@@ -1459,7 +1460,7 @@ public class Remote extends CAutoReleasable {
             return 0;
         }
 
-        public int transferProgress(long progressPtr) {
+        private int transferProgress(long progressPtr) {
             if (_transferProgressCb != null) {
                 TransferProgress progress =
                         progressPtr == 0 ? null : new TransferProgress(true, progressPtr);
@@ -1468,7 +1469,7 @@ public class Remote extends CAutoReleasable {
             return 0;
         }
 
-        public int updateTips(String refname, byte[] ida, byte[] idb) {
+        private int updateTips(String refname, byte[] ida, byte[] idb) {
             if (_updateTipsCb != null) {
                 Oid oida = ida == null ? null : Oid.of(ida);
                 Oid oidb = idb == null ? null : Oid.of(idb);
@@ -1477,28 +1478,28 @@ public class Remote extends CAutoReleasable {
             return 0;
         }
 
-        public int packProgress(int stage, long current, long total) {
+        private int packProgress(int stage, long current, long total) {
             if (_packProgressCb != null) {
                 return _packProgressCb.accept(stage, current, total);
             }
             return 0;
         }
 
-        public int pushTransferProgress(long current, long total, int bytes) {
+        private int pushTransferProgress(long current, long total, int bytes) {
             if (_pushTransferProgressCb != null) {
                 return _pushTransferProgressCb.accept(current, total, bytes);
             }
             return 0;
         }
 
-        public int pushUpdateReference(String refname, String status) {
+        private int pushUpdateReference(String refname, String status) {
             if (_pushUpdateReferenceCb != null) {
                 return _pushUpdateReferenceCb.accept(refname, status);
             }
             return 0;
         }
 
-        public int pushNegotiation(long[] updates) {
+        private int pushNegotiation(long[] updates) {
             if (_pushNegotiationCb != null) {
                 if (updates == null) {
                     return _pushNegotiationCb.accept(Collections.emptyList());
@@ -1511,7 +1512,7 @@ public class Remote extends CAutoReleasable {
             return 0;
         }
 
-        public int resolveUrl(String resolvedUrl, String url, int direction) {
+        private int resolveUrl(String resolvedUrl, String url, int direction) {
             if (_urlResolveCb != null) {
                 return _urlResolveCb.accept(
                         resolvedUrl, url, direction == 0 ? Direction.FETCH : Direction.PUSH);
@@ -1533,7 +1534,7 @@ public class Remote extends CAutoReleasable {
          * @param ownerPtr
          * @return <0 for error,
          */
-        public long transport(long ownerPtr) {
+        private long transport(long ownerPtr) {
             if (_transportCb != null) {
                 Remote remote = ownerPtr == 0 ? null : new Remote(true, ownerPtr);
                 return Optional.ofNullable(_transportCb.accept(remote))

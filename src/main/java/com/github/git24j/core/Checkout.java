@@ -314,18 +314,18 @@ public class Checkout {
 
     @FunctionalInterface
     public interface NotifyCb {
-        public int accept(
+        int accept(
                 NotifyT why, String path, Diff.File baseline, Diff.File target, Diff.File workdir);
     }
 
     @FunctionalInterface
     public interface ProgressCb {
-        public void accept(@CheckForNull String path, int completedSteps, int totalSteps);
+        void accept(@CheckForNull String path, int completedSteps, int totalSteps);
     }
 
     @FunctionalInterface
     public interface PerfdataCb {
-        public void accept(int mkdirCalls, int statCalls, int chmodCalls);
+        void accept(int mkdirCalls, int statCalls, int chmodCalls);
     }
 
     /**

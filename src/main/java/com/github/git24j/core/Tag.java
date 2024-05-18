@@ -328,6 +328,6 @@ public class Tag extends GitObject {
      */
     @FunctionalInterface
     public interface ForeachCb {
-        public int accept(String name, String oid);
+        int accept(String name, String oid);
     }
 }
