@@ -916,7 +916,7 @@ public class Repository extends CAutoCloseable {
     }
 
     public abstract static class FetchHeadForeachCb {
-        int accept(String remoteUrl, byte[] oidRaw, int isMerge) {
+        public int accept(String remoteUrl, byte[] oidRaw, int isMerge) {
             return call(remoteUrl, Oid.of(oidRaw), isMerge == 1);
         }
 
@@ -932,7 +932,7 @@ public class Repository extends CAutoCloseable {
     }
 
     public abstract static class MergeheadForeachCb {
-        int accept(byte[] oidRaw) {
+        public int accept(byte[] oidRaw) {
             return call(Oid.of(oidRaw));
         }
 

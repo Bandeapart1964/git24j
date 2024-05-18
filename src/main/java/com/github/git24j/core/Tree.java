@@ -301,7 +301,7 @@ public class Tree extends GitObject {
 
     /** Callback for Tree.walk */
     public interface WalkCb {
-        int accept(String root, Entry entry);
+        public int accept(String root, Entry entry);
     }
 
     /** Representation of each one of the entries in a tree object. */
@@ -544,7 +544,7 @@ public class Tree extends GitObject {
 
         @FunctionalInterface
         public interface FilterCb {
-            int accept(Entry entry);
+            public int accept(Entry entry);
         }
     }
 }
