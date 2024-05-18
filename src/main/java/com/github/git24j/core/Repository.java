@@ -916,7 +916,8 @@ public class Repository extends CAutoCloseable {
     }
 
     public abstract static class FetchHeadForeachCb {
-        public int accept(String remoteUrl, byte[] oidRaw, int isMerge) {
+        // this method only used by jni, so set it to private is ok, user should overwrite `call` method
+        private int accept(String remoteUrl, byte[] oidRaw, int isMerge) {
             return call(remoteUrl, Oid.of(oidRaw), isMerge == 1);
         }
 
@@ -932,7 +933,7 @@ public class Repository extends CAutoCloseable {
     }
 
     public abstract static class MergeheadForeachCb {
-        public int accept(byte[] oidRaw) {
+        private int accept(byte[] oidRaw) {
             return call(Oid.of(oidRaw));
         }
 

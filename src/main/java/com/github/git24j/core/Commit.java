@@ -567,6 +567,6 @@ public class Commit extends GitObject {
 
     @FunctionalInterface
     public interface SigningCb {
-        public int accept(String signature, String signatureField, String commitContent);
+        int accept(String signature, String signatureField, String commitContent);
     }
 }
