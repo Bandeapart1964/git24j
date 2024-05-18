@@ -922,12 +922,12 @@ public class Reference extends CAutoReleasable {
 
     @FunctionalInterface
     public interface ForeachNameCb {
-        int accept(String name);
+        public int accept(String name);
     }
 
     @FunctionalInterface
     public interface ForeachCb {
-        int accept(long refPtr);
+        public int accept(long refPtr);
     }
 
     public static class Iterator extends CAutoReleasable {
