@@ -474,6 +474,12 @@ public class Repository extends CAutoCloseable {
         return jniIsShallow(getRawPointer()) == 1;
     }
 
+    /** backward compatible, please use `isShallow()` instead */
+    @Deprecated
+    public boolean isShadow() {
+        return isShallow();
+    }
+
     //
     //    static native int jniIdent(
     //            AtomicReference<String> outName, AtomicReference<String> outEmail, long repoPtr);
