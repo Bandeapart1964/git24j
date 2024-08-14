@@ -393,6 +393,8 @@ public class Rebase extends CAutoReleasable {
      * <p>Use to tell the rebase machinery how to operate.
      */
     public static class Options extends CAutoReleasable {
+        public static final int VERSION = 1;
+
         /** void *payload */
         static native void jniOptionsSetPayload(long optionsPtr, long payload);
 
@@ -405,6 +407,10 @@ public class Rebase extends CAutoReleasable {
             Options opts = new Options(false, 0);
             Error.throwIfNeeded(jniOptionsNew(opts._rawPtr, version));
             return opts;
+        }
+
+        public static Options createDefault() {
+            return create(VERSION);
         }
 
         @Override
