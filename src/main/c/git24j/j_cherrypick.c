@@ -28,6 +28,11 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Cherrypick_jniOptionsGetMainline)(JNIEnv *e
     return ((git_cherrypick_options *)optionsPtr)->mainline;
 }
 
+JNIEXPORT void JNICALL J_MAKE_METHOD(Cherrypick_jniOptionsSetMainline)(JNIEnv *env, jclass obj, jlong optionsPtr, jint mainline)
+{
+    ((git_cherrypick_options *)optionsPtr)->mainline = (unsigned int)mainline;
+}
+
 /** git_merge_options merge_opts*/
 JNIEXPORT jlong JNICALL J_MAKE_METHOD(Cherrypick_jniOptionsGetMergeOpts)(JNIEnv *env, jclass obj, jlong optionsPtr)
 {
