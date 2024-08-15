@@ -69,7 +69,7 @@ public class Cherrypick {
         return out;
     }
 
-    public void cherrypick(
+    public static void cherrypick(
             @Nonnull Repository repo, @Nonnull Commit commit, @Nullable Options options) {
         int e =
                 jniCherrypick(
