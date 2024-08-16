@@ -1808,9 +1808,7 @@ public class Diff extends CAutoReleasable {
             int headerLen = getHeaderLen();
             byte[] src = rawHeader.getBytes(StandardCharsets.UTF_8);
             if(src.length > headerLen) {
-                byte[] dest = new byte[headerLen];
-                System.arraycopy(src, 0, dest, 0, headerLen);
-                return new String(dest);
+                return new String(src, 0, headerLen, StandardCharsets.UTF_8);
             }
 
             return rawHeader;
@@ -1968,9 +1966,7 @@ public class Diff extends CAutoReleasable {
             byte[] src = content.getBytes(StandardCharsets.UTF_8);
             // bytes.length < contentLen maybe not happen, because contentLen should be a part of content
             if(src.length > contentLen) {  //if content length bigger than contentLen, create a new sub array
-                byte[] dest = new byte[contentLen];
-                System.arraycopy(src,0,dest,0,contentLen);
-                return new String(dest);
+                return new String(src, 0, contentLen, StandardCharsets.UTF_8);
             }
 
             // if content length equals contentLen, just return it, no more operations required
