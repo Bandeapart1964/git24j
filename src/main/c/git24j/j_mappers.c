@@ -369,6 +369,7 @@ void j_call_setter_string(JNIEnv *env, jclass clz, jobject obj, const char *meth
 
 void j_call_setter_string_c(JNIEnv *env, jclass clz, jobject obj, const char *method, const char *val)
 {
+    //NewStringUTF how know chars length when chars is c char* ? maybe it doesn't copy data? just make a pointer? idk
     jstring jVal = (*env)->NewStringUTF(env, val);
     j_call_setter_string(env, clz, obj, method, jVal);
     (*env)->DeleteLocalRef(env, jVal);

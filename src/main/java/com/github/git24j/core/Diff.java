@@ -908,9 +908,9 @@ public class Diff extends CAutoReleasable {
      * @throws GitException git errors
      */
     @Nonnull
-    public Diff fromBuffer(@Nonnull String content) {
+    public static Diff fromBuffer(@Nonnull String content) {
         Diff diff = new Diff(false, 0);
-        Error.throwIfNeeded(jniFromBuffer(diff._rawPtr, content, content.length()));
+        Error.throwIfNeeded(jniFromBuffer(diff._rawPtr, content, content.getBytes(StandardCharsets.UTF_8).length));
         return diff;
     }
 
