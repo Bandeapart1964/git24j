@@ -68,7 +68,7 @@ public class Branch {
                         repo.getRawPointer(),
                         branchName,
                         target.getRawPointer(),
-                        force ? 0 : 1));
+                        force ? 1 : 0));
         return new Reference(false, outRef.get());
     }
 
@@ -130,7 +130,7 @@ public class Branch {
     public static Reference move(Reference branch, String branchName, boolean force) {
         Reference outRef = new Reference(true, 0);
         Error.throwIfNeeded(
-                jniMove(outRef._rawPtr, branch.getRawPointer(), branchName, force ? 0 : 1));
+                jniMove(outRef._rawPtr, branch.getRawPointer(), branchName, force ? 1 : 0));
         return outRef;
     }
 
