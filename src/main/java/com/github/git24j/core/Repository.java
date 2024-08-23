@@ -523,7 +523,7 @@ public class Repository extends CAutoCloseable {
 
     /** Close the repository, no-op if not opened. */
     public void free() {
-        if (_rawPtr.get() > 0) {
+        if (_rawPtr.get() != 0) {
             jniFree(_rawPtr.getAndSet(0));
         }
     }

@@ -977,7 +977,7 @@ public class Index extends CAutoReleasable {
 
         @Override
         protected void finalize() throws Throwable {
-            if (_ptr.get() > 0) {
+            if (_ptr.get() != 0) {
                 jniConflictIteratorFree(_ptr.get());
             }
             super.finalize();
