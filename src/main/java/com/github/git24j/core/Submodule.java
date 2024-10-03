@@ -676,8 +676,14 @@ public class Submodule extends CAutoReleasable {
      *
      * @return the submodule url
      */
+    @Nullable
     public URI url() {
-        return URI.create(jniUrl(getRawPointer()));
+        String urlStr = jniUrl(getRawPointer());
+        if(urlStr == null) {
+            return null;
+        }else {
+            return URI.create(urlStr);
+        }
     }
 
     /**

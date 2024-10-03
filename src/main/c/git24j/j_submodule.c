@@ -313,7 +313,11 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Submodule_jniUpdateStrategy)(JNIEnv *env, j
 JNIEXPORT jstring JNICALL J_MAKE_METHOD(Submodule_jniUrl)(JNIEnv *env, jclass obj, jlong submodulePtr)
 {
     const char *r = git_submodule_url((git_submodule *)submodulePtr);
-    return (*env)->NewStringUTF(env, r);
+    if(!r){ // r is NULL (0)
+        return NULL;
+    }else {
+        return (*env)->NewStringUTF(env, r);
+    }
 }
 
 /** const git_oid * git_submodule_wd_id(git_submodule *submodule); */
