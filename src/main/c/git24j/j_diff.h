@@ -195,6 +195,7 @@ extern "C"
     JNIEXPORT jint JNICALL J_MAKE_METHOD(Diff_jniLineGetContentOffset)(JNIEnv *env, jclass obj, jlong linePtr);
     /** const char *content*/
     JNIEXPORT jstring JNICALL J_MAKE_METHOD(Diff_jniLineGetContent)(JNIEnv *env, jclass obj, jlong linePtr);
+    JNIEXPORT jbyteArray JNICALL J_MAKE_METHOD(Diff_jniLineGetContentBytes)(JNIEnv *env, jclass obj, jlong linePtr);
 
     /************ diff binary *************/
     /** unsigned int contains_data*/

@@ -240,6 +240,14 @@ public class Diff extends CAutoReleasable {
     /** size_t content_offset */
     static native int jniLineGetContentOffset(long linePtr);
 
+    /**
+     *
+     * @param linePtr line ptr
+     * @return if content len > 0, return byte arr; else return null
+     */
+    @Nullable
+    static native byte[] jniLineGetContentBytes(long linePtr);
+
     /** int new_lineno */
     static native int jniLineGetNewLineno(long linePtr);
 
@@ -1955,7 +1963,27 @@ public class Diff extends CAutoReleasable {
             return jniLineGetContentOffset(getRawPointer());
         }
 
-        public String getContent() {
+        /**
+         * @return if content len > 0, return byte arr, else return null
+         */
+        @Nullable
+        public byte[] getContentBytes(){
+            return jniLineGetContentBytes(getRawPointer());
+        }
+
+        public String getContent(){
+            byte[] bytes = getContentBytes();
+
+            return (bytes!=null) ? new String(bytes, StandardCharsets.UTF_8) : "";
+        }
+
+
+        /**
+         * This has more data copy than getContent(), not recommended to use
+         * @return
+         */
+        @Deprecated
+        public String getContent_Deprecated() {
             String content = jniLineGetContent(getRawPointer());
             int contentLen = jniLineGetContentLen(getRawPointer());
             // content.length() is "chars count", not "bytes count"!

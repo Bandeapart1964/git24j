@@ -234,7 +234,7 @@ public class Branch {
             return null;
         }
         Error.throwIfNeeded(e);
-        return outBuf.getPtr();
+        return outBuf.toString();
     }
 
     /**
@@ -291,7 +291,7 @@ public class Branch {
             return null;
         }
         Error.throwIfNeeded(e);
-        return outBuf.getPtr();
+        return outBuf.toString();
     }
 
     /**
@@ -311,7 +311,7 @@ public class Branch {
         if (e == GitException.ErrorCode.ENOTFOUND.getCode()) {
             return null;
         }
-        return outBuf.getPtr();
+        return outBuf.toString();
     }
 
     public enum BranchType implements IBitEnum {

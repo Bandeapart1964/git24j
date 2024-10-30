@@ -4,31 +4,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 public class Buf {
-    /*
-    if jni.NewStringUTF() just simple make a pointer point to char*, I think this will work well, else idk.
-
-    actually this is java String from libgit2's buf->ptr, so this is not identical libgit2's buf->ptr,
-     and idk this is a good c string copy or not,
-     the source codes is simple use jni.NewStringUTF() get java string from c string,
-     the point is "no length of c string when use jni.NewStringUTF()",
-     so idk if no '\0' of end, this will work as expected or not.
-
-     relate c code:
-     j_mappers.c `void j_git_buf_to_java(JNIEnv *env, git_buf *c_buf, jobject buf)`
-     j_mappers.c `void j_call_setter_string_c(JNIEnv *env, jclass clz, jobject obj, const char *method, const char *val)`
-
-     */
-    private String ptr;
+    private byte[] ptr;
 
     private int reserved;
-    private int size;  // length of c char ( java byte) not java char
+    private int size;  // this size include c char NUL-byte '\0', should -1 when trans to java string by bytes
+
+//    private String cachedString;  // if the Buf is immutable, cachedString is ok, but idk is immutable or isn't, if isn't, shouldn't cache it
 
     /** Get internal buffer, generally only the substr up to size is meaningful. */
-    String getPtr() {
+    public byte[] getPtr() {
         return ptr;
     }
 
-    public void setPtr(String ptr) {
+    public void setPtr(byte[] ptr) {
         this.ptr = ptr;
     }
 
@@ -49,23 +37,26 @@ public class Buf {
     }
 
     public Optional<String> getString() {
-        if (ptr == null || size == 0) {
+        if (size < 1 || ptr == null || ptr.length<1) {
             return Optional.empty();  // value of empty Optional is null
         }
 
-        String ret = ptr;
-
-        byte[] src = ptr.getBytes(StandardCharsets.UTF_8);
-        //the String maybe over size of c string, so check size, if oversize, cut it
-        if(src.length > size) {
-            ret = new String(src, 0, size, StandardCharsets.UTF_8);
+        // this should never happen
+        if(size > ptr.length) {
+            size = ptr.length;
         }
 
-        return Optional.of(ret);
+        return Optional.of(new String(ptr, 0, size, StandardCharsets.UTF_8));
     }
 
     @Override
     public String toString() {
+//        if(cachedString == null) {  // even concurrence should be ok, just will executing getString more than 1 time
+//            cachedString = getString().orElse("");
+//        }
+//
+//        return cachedString;
+
         return getString().orElse("");
     }
 }

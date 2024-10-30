@@ -702,6 +702,14 @@ JNIEXPORT jstring JNICALL J_MAKE_METHOD(Diff_jniLineGetContent)(JNIEnv *env, jcl
     return (*env)->NewStringUTF(env, ((git_diff_line *)linePtr)->content);
 }
 
+JNIEXPORT jbyteArray JNICALL J_MAKE_METHOD(Diff_jniLineGetContentBytes)(JNIEnv *env, jclass obj, jlong linePtr)
+{
+    git_diff_line* dline = (git_diff_line *) linePtr;
+    size_t len = dline->content_len;
+
+    return j_byte_array_from_c(env, dline->content, len);
+}
+
 /** -------- Wrapper Body ---------- */
 /** unsigned int contains_data*/
 JNIEXPORT jint JNICALL J_MAKE_METHOD(Diff_jniBinaryGetContainsData)(JNIEnv *env, jclass obj, jlong binaryPtr)
