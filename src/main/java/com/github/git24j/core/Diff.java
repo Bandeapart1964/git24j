@@ -197,6 +197,9 @@ public class Diff extends CAutoReleasable {
     /** const char* header */
     static native String jniHunkGetHeader(long hunkPtr);
 
+    @Nullable
+    static native byte[] jniHunkGetHeaderBytes(long hunkPtr);
+
     /** size_t header_len */
     static native int jniHunkGetHeaderLen(long hunkPtr);
 
@@ -1811,10 +1814,48 @@ public class Diff extends CAutoReleasable {
             return jniHunkGetHeaderLen(getRawPointer());
         }
 
+        /**
+         * get the bytes of header, the bytes is sized by header len
+         * @return if the header length > 0, return a byte arr, else return null
+         */
+        @Nullable
+        public byte[] getHeaderBytes() {
+            return jniHunkGetHeaderBytes(getRawPointer());
+        }
+
+        /**
+         * get header sized by header length
+         * @return the header text sized by header length
+         */
         public String getHeader() {
+            byte[] headerBytes = getHeaderBytes();
+            return headerBytes!=null ? new String(headerBytes, StandardCharsets.UTF_8) : "";
+        }
+
+        /**
+         * get the raw header which not sized by header length,
+         * libgit2 doc said the `hunk->header` ends with '\0',
+         * and this String created by jni c code `NewStringUTF`, it determines the length by '\0' too,
+         * so if everything fine, this should return same content with `getHeader()`,
+         * and the performance, I am not sure, maybe this better
+         *
+         * @return the raw header which not sized by header length
+         */
+        public String getHeaderRaw() {
+            return jniHunkGetHeader(getRawPointer());
+        }
+
+        /**
+         * use getHeader() instead
+         * @return
+         */
+        @Deprecated
+        public String getHeader_Depercated() {
             String rawHeader = jniHunkGetHeader(getRawPointer());
             int headerLen = getHeaderLen();
             byte[] src = rawHeader.getBytes(StandardCharsets.UTF_8);
+            // because the libgit2 doc said the header terminated with '\0',
+            // so this check should always false, if everything fine
             if(src.length > headerLen) {
                 return new String(src, 0, headerLen, StandardCharsets.UTF_8);
             }
@@ -1964,6 +2005,7 @@ public class Diff extends CAutoReleasable {
         }
 
         /**
+         * get the bytes of content, the bytes sized by content length
          * @return if content len > 0, return byte arr, else return null
          */
         @Nullable
@@ -1971,6 +2013,10 @@ public class Diff extends CAutoReleasable {
             return jniLineGetContentBytes(getRawPointer());
         }
 
+        /**
+         * get the content sized by content length
+         * @return
+         */
         public String getContent(){
             byte[] bytes = getContentBytes();
 

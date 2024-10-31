@@ -650,13 +650,26 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Diff_jniHunkGetNewLines)(JNIEnv *env, jclas
 /** size_t header_len*/
 JNIEXPORT jint JNICALL J_MAKE_METHOD(Diff_jniHunkGetHeaderLen)(JNIEnv *env, jclass obj, jlong hunkPtr)
 {
+    // The libgit2 doc haven't wrote, but this length should not include terminated NUL-byte('\0') of `hunk->header`
     return ((git_diff_hunk *)hunkPtr)->header_len;
 }
 
 /** const char*   header*/
 JNIEXPORT jstring JNICALL J_MAKE_METHOD(Diff_jniHunkGetHeader)(JNIEnv *env, jclass obj, jlong hunkPtr)
 {
+    // due to hunk->header terminated by '\0' (libgit2 doc said),
+    // this should ever get header with right length(the String bytes length should equals to `hunk->header_len`)
     return (*env)->NewStringUTF(env, ((git_diff_hunk *)hunkPtr)->header);
+}
+
+JNIEXPORT jbyteArray JNICALL J_MAKE_METHOD(Diff_jniHunkGetHeaderBytes)(JNIEnv *env, jclass obj, jlong hunkPtr)
+{
+    git_diff_hunk* hunk = (git_diff_hunk *) hunkPtr;
+    //https://libgit2.org/libgit2/#v1.7.2/type/git_diff_hunk
+    //I guess this header_len is not include '\0', but the libgit2 doc omit the info
+    size_t len = hunk->header_len;
+
+    return j_byte_array_from_c(env, hunk->header, len);
 }
 
 /************ diff line *************/
