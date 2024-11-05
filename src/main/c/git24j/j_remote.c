@@ -951,6 +951,19 @@ JNIEXPORT void JNICALL J_MAKE_METHOD(Remote_jniPushOptionsSetCustomHeaders)(JNIE
     j_strarray_from_java(env, c_array, customHeaders);
 }
 
+JNIEXPORT void JNICALL J_MAKE_METHOD(Remote_jniPushOptionsSetRemotePushOptions)(JNIEnv *env, jclass obj, jlong pushOptionsPtr, jobjectArray remotePushOptions)
+{
+    git_strarray *c_array = &(((git_push_options *)pushOptionsPtr)->remote_push_options);
+    j_strarray_from_java(env, c_array, remotePushOptions);
+}
+
+JNIEXPORT void JNICALL J_MAKE_METHOD(Remote_jniPushOptionsGetRemotePushOptions)(JNIEnv *env, jclass obj, jlong pushOptionsPtr, jobject outRemotePushOptions)
+{
+    git_strarray *c_array = &(((git_push_options *)pushOptionsPtr)->remote_push_options);
+    j_strarray_to_java_list(env, c_array, outRemotePushOptions);
+}
+
+
 /** -------- Wrapper Body ---------- */
 JNIEXPORT jlong JNICALL J_MAKE_METHOD(Remote_jniPushUpdateNew)(JNIEnv *env, jclass obj)
 {

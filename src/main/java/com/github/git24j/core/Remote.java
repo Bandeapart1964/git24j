@@ -251,6 +251,14 @@ public class Remote extends CAutoReleasable {
     /** git_strarray custom_headers */
     static native void jniPushOptionsSetCustomHeaders(long push_optionsPtr, String[] customHeaders);
 
+    /**
+     * "Push options" to deliver to the remote.
+     *
+     * @since libgit2 1.8
+     */
+    static native void jniPushOptionsSetRemotePushOptions(long push_optionsPtr, String[] remotePushOptions);
+    static native void jniPushOptionsGetRemotePushOptions(long push_optionsPtr, List<String> outRemotePushOptions);
+
     /** unsigned int pb_parallelism */
     static native void jniPushOptionsSetPbParallelism(long push_optionsPtr, int pbParallelism);
 

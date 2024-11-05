@@ -48,6 +48,22 @@ public class Config extends CAutoReleasable {
     /** const char *value */
     static native String jniEntryGetValue(long entryPtr);
 
+    /**
+     * The type of backend that this entry exists in (eg, "file")
+     *
+     *
+     * @since libgit2 1.8.0
+     * */
+    static native String jniEntryGetBackendType(long entryPtr);
+    /**
+     * The path to the origin of this entry. For config files, this is
+     * the path to the file.
+     *
+     *
+     * @since libgit2 1.8.0
+     */
+    static native String jniEntryGetOriginPath(long entryPtr);
+
     /** int git_config_find_global(git_buf *out); */
     static native int jniFindGlobal(Buf out);
 
@@ -735,8 +751,19 @@ public class Config extends CAutoReleasable {
         /** Repository specific configuration file; $WORK_DIR/.git/config on non-bare repos */
         LOCAL(5),
 
-        /** Application specific configuration file; freely defined by applications */
-        APP(6),
+        /**
+         * Worktree specific configuration file; $GIT_DIR/config.worktree
+
+         @since libgit2 1.8.0
+         */
+        WORKTREE(6),
+
+
+        /** Application specific configuration file; freely defined by applications
+         *
+         * @since libgit2 1.8 change to 7, before is 6
+         * */
+        APP(7),
 
         /**
          * Represents the highest level available config file (i.e. the most specific config file
@@ -789,6 +816,14 @@ public class Config extends CAutoReleasable {
 
         public int getLevel() {
             return jniEntryGetLevel(getRawPointer());
+        }
+
+        public String getBackendType(){
+            return jniEntryGetBackendType(getRawPointer());
+        }
+
+        public String getOriginPath(){
+            return jniEntryGetOriginPath(getRawPointer());
         }
     }
 

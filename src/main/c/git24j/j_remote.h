@@ -240,6 +240,10 @@ extern "C"
     /** git_strarray custom_headers*/
     JNIEXPORT void JNICALL J_MAKE_METHOD(Remote_jniPushOptionsSetCustomHeaders)(JNIEnv *env, jclass obj, jlong pushOptionsPtr, jobjectArray customHeaders);
 
+    /** git_strarray remote_push_options*/
+    JNIEXPORT void JNICALL J_MAKE_METHOD(Remote_jniPushOptionsSetRemotePushOptions)(JNIEnv *env, jclass obj, jlong pushOptionsPtr, jobjectArray remotePushOptions);
+    JNIEXPORT void JNICALL J_MAKE_METHOD(Remote_jniPushOptionsGetRemotePushOptions)(JNIEnv *env, jclass obj, jlong pushOptionsPtr, jobject outRemotePushOptions);
+
     /** -------- Signature of the header ---------- */
     JNIEXPORT jlong JNICALL J_MAKE_METHOD(Remote_jniPushUpdateNew)(JNIEnv *env, jclass obj);
     JNIEXPORT void JNICALL J_MAKE_METHOD(Remote_jniPushUpdateFree)(JNIEnv *env, jclass obj, jlong pushUpdatePtr);

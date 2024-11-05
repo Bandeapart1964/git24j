@@ -42,6 +42,19 @@ JNIEXPORT jstring JNICALL J_MAKE_METHOD(Config_jniEntryGetValue)(JNIEnv *env, jc
     return (*env)->NewStringUTF(env, ((git_config_entry *)entryPtr)->value);
 }
 
+/** const char *backend_type */
+JNIEXPORT jstring JNICALL J_MAKE_METHOD(Config_jniEntryGetBackendType)(JNIEnv *env, jclass obj, jlong entryPtr)
+{
+    const char* c_char = ((git_config_entry *)entryPtr)->backend_type
+    return (*env)->NewStringUTF(env, c_char?c_char:"");
+}
+/** const char *origin_path */
+JNIEXPORT jstring JNICALL J_MAKE_METHOD(Config_jniEntryGetOriginPath)(JNIEnv *env, jclass obj, jlong entryPtr)
+{
+    const char* c_char = ((git_config_entry *)entryPtr)->origin_path
+    return (*env)->NewStringUTF(env, c_char?c_char:"");
+}
+
 /** unsigned int include_depth*/
 JNIEXPORT jint JNICALL J_MAKE_METHOD(Config_jniEntryGetIncludeDepth)(JNIEnv *env, jclass obj, jlong entryPtr)
 {
