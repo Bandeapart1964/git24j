@@ -45,13 +45,13 @@ JNIEXPORT jstring JNICALL J_MAKE_METHOD(Config_jniEntryGetValue)(JNIEnv *env, jc
 /** const char *backend_type */
 JNIEXPORT jstring JNICALL J_MAKE_METHOD(Config_jniEntryGetBackendType)(JNIEnv *env, jclass obj, jlong entryPtr)
 {
-    const char* c_char = ((git_config_entry *)entryPtr)->backend_type
+    const char* c_char = ((git_config_entry *)entryPtr)->backend_type;
     return (*env)->NewStringUTF(env, c_char?c_char:"");
 }
 /** const char *origin_path */
 JNIEXPORT jstring JNICALL J_MAKE_METHOD(Config_jniEntryGetOriginPath)(JNIEnv *env, jclass obj, jlong entryPtr)
 {
-    const char* c_char = ((git_config_entry *)entryPtr)->origin_path
+    const char* c_char = ((git_config_entry *)entryPtr)->origin_path;
     return (*env)->NewStringUTF(env, c_char?c_char:"");
 }
 
