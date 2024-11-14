@@ -2,7 +2,6 @@ package com.github.git24j.core;
 
 import static com.github.git24j.core.GitException.ErrorCode.ENOTFOUND;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -390,9 +389,9 @@ public class Remote extends CAutoReleasable {
      * @throws GitException GIT_EINVALIDSPEC, GIT_EEXISTS or an error code
      */
     @Nonnull
-    public static Remote create(@Nonnull Repository repo, @Nonnull String name, @Nonnull URI url) {
+    public static Remote create(@Nonnull Repository repo, @Nonnull String name, @Nonnull String url) {
         Remote remote = new Remote(false, 0);
-        Error.throwIfNeeded(jniCreate(remote._rawPtr, repo.getRawPointer(), name, url.toString()));
+        Error.throwIfNeeded(jniCreate(remote._rawPtr, repo.getRawPointer(), name, url));
         return remote;
     }
 
@@ -408,10 +407,10 @@ public class Remote extends CAutoReleasable {
      * @throws GitException git errors
      */
     @Nonnull
-    public static Remote createAnonymous(@Nonnull Repository repo, @Nonnull URI url) {
+    public static Remote createAnonymous(@Nonnull Repository repo, @Nonnull String url) {
         Remote remote = new Remote(false, 0);
         Error.throwIfNeeded(
-                jniCreateAnonymous(remote._rawPtr, repo.getRawPointer(), url.toString()));
+                jniCreateAnonymous(remote._rawPtr, repo.getRawPointer(), url));
         return remote;
     }
 
@@ -429,9 +428,9 @@ public class Remote extends CAutoReleasable {
      * @throws GitException git errors
      */
     @Nonnull
-    public static Remote createDetached(@Nonnull URI url) {
+    public static Remote createDetached(@Nonnull String url) {
         Remote remote = new Remote(false, 0);
-        Error.throwIfNeeded(jniCreateDetached(remote._rawPtr, url.toString()));
+        Error.throwIfNeeded(jniCreateDetached(remote._rawPtr, url));
         return remote;
     }
 
@@ -450,12 +449,12 @@ public class Remote extends CAutoReleasable {
     public static Remote createWithFetchspec(
             @Nonnull Repository repo,
             @Nonnull String name,
-            @Nonnull URI url,
+            @Nonnull String url,
             @Nullable String fetch) {
         Remote remote = new Remote(false, 0);
         Error.throwIfNeeded(
                 jniCreateWithFetchspec(
-                        remote._rawPtr, repo.getRawPointer(), name, url.toString(), fetch));
+                        remote._rawPtr, repo.getRawPointer(), name, url, fetch));
         return remote;
     }
 
@@ -472,11 +471,11 @@ public class Remote extends CAutoReleasable {
      * @throws GitException GIT_EINVALIDSPEC, GIT_EEXISTS or an error code
      */
     @Nonnull
-    public static Remote createWithOpts(@Nonnull URI url, @Nullable CreateOptions opts) {
+    public static Remote createWithOpts(@Nonnull String url, @Nullable CreateOptions opts) {
         Remote remote = new Remote(false, 0);
         Error.throwIfNeeded(
                 jniCreateWithOpts(
-                        remote._rawPtr, url.toString(), opts == null ? 0 : opts.getRawPointer()));
+                        remote._rawPtr, url, opts == null ? 0 : opts.getRawPointer()));
         return remote;
     }
 
@@ -583,9 +582,9 @@ public class Remote extends CAutoReleasable {
      * @throws GitException git errors
      */
     public static void setPushurl(
-            @Nonnull Repository repo, @Nonnull String remote, @Nullable URI url) {
+            @Nonnull Repository repo, @Nonnull String remote, @Nullable String url) {
         Error.throwIfNeeded(
-                jniSetPushurl(repo.getRawPointer(), remote, url == null ? null : url.toString()));
+                jniSetPushurl(repo.getRawPointer(), remote, url));
     }
 
     /**
@@ -599,9 +598,9 @@ public class Remote extends CAutoReleasable {
      * @param url the url to set, null to delete the remote from config
      * @throws GitException git errors
      */
-    public static void setUrl(@Nonnull Repository repo, @Nonnull String remote, @Nullable URI url) {
+    public static void setUrl(@Nonnull Repository repo, @Nonnull String remote, @Nullable String url) {
         Error.throwIfNeeded(
-                jniSetUrl(repo.getRawPointer(), remote, url == null ? null : url.toString()));
+                jniSetUrl(repo.getRawPointer(), remote, url));
     }
 
     @Override
