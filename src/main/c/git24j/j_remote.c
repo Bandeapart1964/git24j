@@ -616,7 +616,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Remote_jniPush)(JNIEnv *env, jclass obj, jl
 JNIEXPORT jstring JNICALL J_MAKE_METHOD(Remote_jniPushurl)(JNIEnv *env, jclass obj, jlong remotePtr)
 {
     const char *r = git_remote_pushurl((git_remote *)remotePtr);
-    return (*env)->NewStringUTF(env, r);
+    return r ? (*env)->NewStringUTF(env, r) : NULL;
 }
 
 /** size_t git_remote_refspec_count(const git_remote *remote); */
@@ -708,7 +708,7 @@ JNIEXPORT jint JNICALL J_MAKE_METHOD(Remote_jniUpload)(JNIEnv *env, jclass obj, 
 JNIEXPORT jstring JNICALL J_MAKE_METHOD(Remote_jniUrl)(JNIEnv *env, jclass obj, jlong remotePtr)
 {
     const char *r = git_remote_url((git_remote *)remotePtr);
-    return (*env)->NewStringUTF(env, r);
+    return r ? (*env)->NewStringUTF(env, r) : NULL;
 }
 
 /** -------- Wrapper Body ---------- */

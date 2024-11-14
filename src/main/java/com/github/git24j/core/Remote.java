@@ -861,11 +861,12 @@ public class Remote extends CAutoReleasable {
      *
      * <p>If url.*.pushInsteadOf has been configured for this URL, it will return the modified URL.
      *
-     * @return the url or empty if no special url for pushing is set
+     * @return the url or null if no special url for pushing is set
      */
     @Nullable
-    public URI pushurl() {
-        return Optional.ofNullable(jniPushurl(getRawPointer())).map(URI::create).orElse(null);
+    public String pushurl() {
+//        return Optional.ofNullable(jniPushurl(getRawPointer())).map(URI::create).orElse(null);
+        return jniPushurl(getRawPointer());
     }
 
     /**
@@ -950,12 +951,12 @@ public class Remote extends CAutoReleasable {
      *
      * <p>If url.*.insteadOf has been configured for this URL, it will return the modified URL.
      *
-     * @return URI that represents the url
-     * @throws IllegalStateException if remote url is not a valid URI
+     * @return the url string
      */
     @Nonnull
-    public URI url() {
-        return URI.create(jniUrl(getRawPointer()));
+    public String url() {
+        String url = jniUrl(getRawPointer());
+        return url==null ? "" : url;
     }
 
     public enum AutotagOptionT implements IBitEnum {
